@@ -1,71 +1,41 @@
 /*
-The product difference between two pairs (a, b) and (c, d) is defined as (a * b) - (c * d).
+You are given an integer array prices representing the prices of various chocolates in a store. You are also given a single integer money, which represents your initial amount of money.
 
-For example, the product difference between (5, 6) and (2, 7) is (5 * 6) - (2 * 7) = 16.
-Given an integer array nums, choose four distinct indices w, x, y, and z such that the product difference between pairs (nums[w], nums[x]) and (nums[y], nums[z]) is maximized.
+You must buy exactly two chocolates in such a way that you still have some non-negative leftover money. You would like to minimize the sum of the prices of the two chocolates you buy.
 
-Return the maximum such product difference.
+Return the amount of money you will have leftover after buying the two chocolates. If there is no way for you to buy two chocolates without ending up in debt, return money. Note that the leftover must be non-negative.
 
  
-
 Example 1:
 
-Input: nums = [5,6,2,7,4]
-Output: 34
-Explanation: We can choose indices 1 and 3 for the first pair (6, 7) and indices 2 and 4 for the second pair (2, 4).
-The product difference is (6 * 7) - (2 * 4) = 34.
+Input: prices = [1,2,2], money = 3
+Output: 0
+Explanation: Purchase the chocolates priced at 1 and 2 units respectively. You will have 3 - 3 = 0 units of money afterwards. Thus, we return 0.
 Example 2:
 
-Input: nums = [4,2,5,9,7,4,8]
-Output: 64
-Explanation: We can choose indices 3 and 6 for the first pair (9, 8) and indices 1 and 5 for the second pair (2, 4).
-The product difference is (9 * 8) - (2 * 4) = 64.
+Input: prices = [3,2,3], money = 3
+Output: 3
+Explanation: You cannot buy 2 chocolates without going in debt, so we return 3.
  
 
 Constraints:
 
-4 <= nums.length <= 104
-1 <= nums[i] <= 104
+2 <= prices.length <= 50
+1 <= prices[i] <= 100
+1 <= money <= 100
 
 */
 
-// Solution 1
+// Solution 
 
 /**
- * @param {number[]} nums
+ * @param {number[]} prices
+ * @param {number} money
  * @return {number}
  */
-var maxProductDifference = function(nums) {
-    nums = nums.sort((a,b) => a-b);
-    return (nums[nums.length-1] * nums[nums.length-2]) - (nums[0] * nums[1])
-};
+var buyChoco = function(prices, money) {
+    const [first, second, ...others] = prices.sort((a, b) => a - b);
+    const left = money - (first + second);
 
-
-// Solution 2
-
-/**
- * @param {number[]} nums
- * @return {number}
- */
-var maxProductDifference = function(nums) {
-    let largest1 = -Infinity, largest2 = -Infinity;
-    let smallest1 = Infinity, smallest2 = Infinity;
-
-    for (let num of nums) {
-        if (num > largest1) {
-            largest2 = largest1;
-            largest1 = num;
-        } else if (num > largest2) {
-            largest2 = num;
-        }
-
-        if (num < smallest1) {
-            smallest2 = smallest1;
-            smallest1 = num;
-        } else if (num < smallest2) {
-            smallest2 = num;
-        }
-    }
-
-    return (largest1 * largest2) - (smallest1 * smallest2);
+    return left < 0 ? money : left;
 };
