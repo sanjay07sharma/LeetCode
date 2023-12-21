@@ -1,41 +1,56 @@
 /*
-You are given an integer array prices representing the prices of various chocolates in a store. You are also given a single integer money, which represents your initial amount of money.
+Given n points on a 2D plane where points[i] = [xi, yi], Return the widest vertical area between two points such that no points are inside the area.
 
-You must buy exactly two chocolates in such a way that you still have some non-negative leftover money. You would like to minimize the sum of the prices of the two chocolates you buy.
+A vertical area is an area of fixed-width extending infinitely along the y-axis (i.e., infinite height). The widest vertical area is the one with the maximum width.
 
-Return the amount of money you will have leftover after buying the two chocolates. If there is no way for you to buy two chocolates without ending up in debt, return money. Note that the leftover must be non-negative.
+Note that points on the edge of a vertical area are not considered included in the area.
 
- 
-Example 1:
-
-Input: prices = [1,2,2], money = 3
-Output: 0
-Explanation: Purchase the chocolates priced at 1 and 2 units respectively. You will have 3 - 3 = 0 units of money afterwards. Thus, we return 0.
+Input: points = [[8,7],[9,9],[7,4],[9,7]]
+Output: 1
+Explanation: Both the red and the blue area are optimal.
 Example 2:
 
-Input: prices = [3,2,3], money = 3
+Input: points = [[3,1],[9,0],[1,0],[1,4],[5,3],[8,8]]
 Output: 3
-Explanation: You cannot buy 2 chocolates without going in debt, so we return 3.
  
-
 Constraints:
 
-2 <= prices.length <= 50
-1 <= prices[i] <= 100
-1 <= money <= 100
-
+n == points.length
+2 <= n <= 105
+points[i].length == 2
+0 <= xi, yi <= 109
 */
 
 // Solution 
 
 /**
- * @param {number[]} prices
- * @param {number} money
+ * @param {number[][]} points
  * @return {number}
+ Return the widest vertical area between two points such that no points are inside the area.
  */
-var buyChoco = function(prices, money) {
-    const [first, second, ...others] = prices.sort((a, b) => a - b);
-    const left = money - (first + second);
+ var maxWidthOfVerticalArea = function(points) {
+    let x = [];
 
-    return left < 0 ? money : left;
+    // core logic is to return the maximum difference between consecutive X-axis values.
+    // hence get all the x axis points.
+
+    for (let i = 0; i < points.length; i ++) {
+        x.push(points[i][0]);
+    }
+
+    // reverse the array sort it descending order
+    x = x.sort((a, b) => b - a);
+
+    // find lagest diff between 2 consecutive points such that they are non zero.
+    let maximumDiff = 0;
+    for (let i = 0; i < x.length -1; i++) {
+        let diff = x[i] - x[i+1];
+
+        if (diff > maximumDiff) {
+            maximumDiff = diff;
+        }
+    }
+
+    return maximumDiff;
+
 };
