@@ -1,75 +1,69 @@
 /*
-Given n points on a 2D plane where points[i] = [xi, yi], Return the widest vertical area between two points such that no points are inside the area.
+Given a string path, where path[i] = 'N', 'S', 'E' or 'W', each representing moving one unit north, south, east, or west, respectively. You start at the origin (0, 0) on a 2D plane and walk on the path specified by path.
 
-A vertical area is an area of fixed-width extending infinitely along the y-axis (i.e., infinite height). The widest vertical area is the one with the maximum width.
+Return true if the path crosses itself at any point, that is, if at any time you are on a location you have previously visited. Return false otherwise.
 
-Note that points on the edge of a vertical area are not considered included in the area.
 
-Input: points = [[8,7],[9,9],[7,4],[9,7]]
-Output: 1
-Explanation: Both the red and the blue area are optimal.
+Example 1:
+
+Input: path = "NES"
+Output: false 
+Explanation: Notice that the path doesn't cross any point more than once.
+
 Example 2:
 
-Input: points = [[3,1],[9,0],[1,0],[1,4],[5,3],[8,8]]
-Output: 3
+Input: path = "NESWW"
+Output: true
+Explanation: Notice that the path visits the origin twice.
  
+
 Constraints:
 
-n == points.length
-2 <= n <= 105
-points[i].length == 2
-0 <= xi, yi <= 109
+1 <= path.length <= 104
+path[i] is either 'N', 'S', 'E', or 'W'.
 */
 
 // Solution 1
 
 /**
- * @param {number[][]} points
- * @return {number}
- Return the widest vertical area between two points such that no points are inside the area.
- */
- var maxWidthOfVerticalArea = function(points) {
-    let x = [];
+ * @param {string} path
+ * @return {boolean}
+O (0,0)
+N (0,1) that means +! to y
+S (0,-1) -1 to y
+E (1,0) +1 to x
+W (-1,0) -1 to x
+*/
 
-    // core logic is to return the maximum difference between consecutive X-axis values.
-    // hence get all the x axis points.
+function isPathCrossing(path) {
+    let x = 0, y = 0;
+    let locations = new Set();
+    locations.add(`${x},${y}`);
 
-    for (let i = 0; i < points.length; i ++) {
-        x.push(points[i][0]);
-    }
-
-    // reverse the array sort it descending order
-    x = x.sort((a, b) => b - a);
-
-    // find lagest diff between 2 consecutive points such that they are non zero.
-    let maximumDiff = 0;
-    for (let i = 0; i < x.length -1; i++) {
-        let diff = x[i] - x[i+1];
-
-        if (diff > maximumDiff) {
-            maximumDiff = diff;
+    for (let direction of path) {
+        switch (direction) {
+            case 'N':
+                y += 1;
+                break;
+            case 'S':
+                y -= 1;
+                break;
+            case 'E':
+                x += 1;
+                break;
+            case 'W':
+                x -= 1;
+                break;
         }
-    }
 
-    return maximumDiff;
-
-};
-
-
-// Solution 2
-
-/**
- * @param {number[][]} points
- * @return {number}
- */
-var maxWidthOfVerticalArea = function(points) {
-    points = points.sort((a, b) => b[0] - a[0]);
-    let maximumDiff = 0;
-    for (let i = 0; i < points.length -1; i++) {
-        let diff = points[i][0] - points[i+1][0];
-        if (diff > maximumDiff) {
-            maximumDiff = diff;
+        // Check if the current position has been locations before
+        if (locations.has(`${x},${y}`)) {
+            return true;
         }
+
+        // Add the current position to the set of locations positions
+        locations.add(`${x},${y}`);
     }
-    return maximumDiff; 
-};
+
+    return false;
+}
