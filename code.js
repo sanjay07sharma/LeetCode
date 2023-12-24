@@ -1,69 +1,56 @@
 /*
-Given a string path, where path[i] = 'N', 'S', 'E' or 'W', each representing moving one unit north, south, east, or west, respectively. You start at the origin (0, 0) on a 2D plane and walk on the path specified by path.
 
-Return true if the path crosses itself at any point, that is, if at any time you are on a location you have previously visited. Return false otherwise.
+You are given a string s consisting only of the characters '0' and '1'. In one operation, you can change any '0' to '1' or vice versa.
 
+The string is called alternating if no two adjacent characters are equal. For example, the string "010" is alternating, while the string "0100" is not.
+
+Return the minimum number of operations needed to make s alternating.
+
+ 
 
 Example 1:
 
-Input: path = "NES"
-Output: false 
-Explanation: Notice that the path doesn't cross any point more than once.
-
+Input: s = "0100"
+Output: 1
+Explanation: If you change the last character to '1', s will be "0101", which is alternating.
 Example 2:
 
-Input: path = "NESWW"
-Output: true
-Explanation: Notice that the path visits the origin twice.
+Input: s = "10"
+Output: 0
+Explanation: s is already alternating.
+Example 3:
+
+Input: s = "1111"
+Output: 2
+Explanation: You need two operations to reach "0101" or "1010".
  
 
 Constraints:
 
-1 <= path.length <= 104
-path[i] is either 'N', 'S', 'E', or 'W'.
-*/
+1 <= s.length <= 104
+s[i] is either '0' or '1'.
 
-// Solution 1
 
 /**
- * @param {string} path
- * @return {boolean}
-O (0,0)
-N (0,1) that means +! to y
-S (0,-1) -1 to y
-E (1,0) +1 to x
-W (-1,0) -1 to x
-*/
+ * @param {string} s
+ * @return {number}
+ */
+var minOperations = function(s) {
+    let count0 = 0;
+    let count1 = 0;
 
-function isPathCrossing(path) {
-    let x = 0, y = 0;
-    let locations = new Set();
-    locations.add(`${x},${y}`);
+    for (let i = 0; i < s.length; i++) {
+        const expectedChar0 = (i % 2 === 0) ? '0' : '1';
+        const expectedChar1 = (i % 2 === 0) ? '1' : '0';
 
-    for (let direction of path) {
-        switch (direction) {
-            case 'N':
-                y += 1;
-                break;
-            case 'S':
-                y -= 1;
-                break;
-            case 'E':
-                x += 1;
-                break;
-            case 'W':
-                x -= 1;
-                break;
+        if (s[i] !== expectedChar0) {
+            count0++;
         }
 
-        // Check if the current position has been locations before
-        if (locations.has(`${x},${y}`)) {
-            return true;
+        if (s[i] !== expectedChar1) {
+            count1++;
         }
-
-        // Add the current position to the set of locations positions
-        locations.add(`${x},${y}`);
     }
 
-    return false;
-}
+    return Math.min(count0, count1);
+};
