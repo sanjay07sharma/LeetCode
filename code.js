@@ -1,56 +1,60 @@
 /*
 
-You are given a string s consisting only of the characters '0' and '1'. In one operation, you can change any '0' to '1' or vice versa.
+You have n dice, and each die has k faces numbered from 1 to k.
 
-The string is called alternating if no two adjacent characters are equal. For example, the string "010" is alternating, while the string "0100" is not.
-
-Return the minimum number of operations needed to make s alternating.
+Given three integers n, k, and target, return the number of possible ways (out of the kn total ways) to roll the dice, so the sum of the face-up numbers equals target. Since the answer may be too large, return it modulo 109 + 7.
 
  
 
 Example 1:
 
-Input: s = "0100"
+Input: n = 1, k = 6, target = 3
 Output: 1
-Explanation: If you change the last character to '1', s will be "0101", which is alternating.
+Explanation: You throw one die with 6 faces.
+There is only one way to get a sum of 3.
 Example 2:
 
-Input: s = "10"
-Output: 0
-Explanation: s is already alternating.
+Input: n = 2, k = 6, target = 7
+Output: 6
+Explanation: You throw two dice, each with 6 faces.
+There are 6 ways to get a sum of 7: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1.
 Example 3:
 
-Input: s = "1111"
-Output: 2
-Explanation: You need two operations to reach "0101" or "1010".
- 
+Input: n = 30, k = 30, target = 500
+Output: 222616187
+Explanation: The answer must be returned modulo 109 + 7.
 
 Constraints:
 
-1 <= s.length <= 104
-s[i] is either '0' or '1'.
-
+1 <= n, k <= 30
+1 <= target <= 1000
 
 /**
- * @param {string} s
+ * @param {number} n,k,target
  * @return {number}
  */
-var minOperations = function(s) {
-    let count0 = 0;
-    let count1 = 0;
+var MOD = 1_000_000_007;
 
-    for (let i = 0; i < s.length; i++) {
-        const expectedChar0 = (i % 2 === 0) ? '0' : '1';
-        const expectedChar1 = (i % 2 === 0) ? '1' : '0';
+var numRollsToTarget = function(n, k, target) {
+    // concept of memoization + recursion is used to store the results of the subproblems
+    // so that we do not have to recalculate them when needed later.
+    // fill the memo array with -1.
+	const memo = Array(n + 1).fill(-1).map(x => Array(target + 1).fill(-1));
+	return calculateRolls(n, k, target, memo);
+};
 
-        if (s[i] !== expectedChar0) {
-            count0++;
-        }
+var calculateRolls = function(n, k, target, memo) {
+	if (n === 0 || target < 0)
+		return target === 0 ? 1 : 0;
 
-        if (s[i] !== expectedChar1) {
-            count1++;
-        }
-    }
+	if (memo[n][target] !== -1)
+			return memo[n][target];
 
-    return Math.min(count0, count1);
+	let ways = 0;
+
+    // iterate through each face of the die (i from 1 to k).
+	for (let i = 1; i <= k; i++)
+		ways = (ways + calculateRolls(n - 1, k, target - i, memo)) % MOD;
+
+	return memo[n][target] = ways;
 };
