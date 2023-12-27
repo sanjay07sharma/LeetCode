@@ -1,60 +1,72 @@
 /*
 
-You have n dice, and each die has k faces numbered from 1 to k.
+Alice has n balloons arranged on a rope. You are given a 0-indexed string colors where colors[i] is the color of the ith balloon.
 
-Given three integers n, k, and target, return the number of possible ways (out of the kn total ways) to roll the dice, so the sum of the face-up numbers equals target. Since the answer may be too large, return it modulo 109 + 7.
+Alice wants the rope to be colorful. She does not want two consecutive balloons to be of the same color, so she asks Bob for help. Bob can remove some balloons from the rope to make it colorful. You are given a 0-indexed integer array neededTime where neededTime[i] is the time (in seconds) that Bob needs to remove the ith balloon from the rope.
 
- 
+Return the minimum time Bob needs to make the rope colorful.
+
 
 Example 1:
 
-Input: n = 1, k = 6, target = 3
-Output: 1
-Explanation: You throw one die with 6 faces.
-There is only one way to get a sum of 3.
+
+Input: colors = "abaac", neededTime = [1,2,3,4,5]
+Output: 3
+Explanation: In the above image, 'a' is blue, 'b' is red, and 'c' is green.
+Bob can remove the blue balloon at index 2. This takes 3 seconds.
+There are no longer two consecutive balloons of the same color. Total time = 3.
 Example 2:
 
-Input: n = 2, k = 6, target = 7
-Output: 6
-Explanation: You throw two dice, each with 6 faces.
-There are 6 ways to get a sum of 7: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1.
+
+Input: colors = "abc", neededTime = [1,2,3]
+Output: 0
+Explanation: The rope is already colorful. Bob does not need to remove any balloons from the rope.
 Example 3:
 
-Input: n = 30, k = 30, target = 500
-Output: 222616187
-Explanation: The answer must be returned modulo 109 + 7.
+
+Input: colors = "aabaa", neededTime = [1,2,3,4,1]
+Output: 2
+Explanation: Bob will remove the ballons at indices 0 and 4. Each ballon takes 1 second to remove.
+There are no longer two consecutive balloons of the same color. Total time = 1 + 1 = 2.
+ 
 
 Constraints:
 
-1 <= n, k <= 30
-1 <= target <= 1000
+n == colors.length == neededTime.length
+1 <= n <= 105
+1 <= neededTime[i] <= 104
+colors contains only lowercase English letters.
+
+*/
 
 /**
- * @param {number} n,k,target
+
+ * @param {string} colors
+ * @param {number[]} neededTime
  * @return {number}
- */
-var MOD = 1_000_000_007;
 
-var numRollsToTarget = function(n, k, target) {
-    // concept of memoization + recursion is used to store the results of the subproblems
-    // so that we do not have to recalculate them when needed later.
-    // fill the memo array with -1.
-	const memo = Array(n + 1).fill(-1).map(x => Array(target + 1).fill(-1));
-	return calculateRolls(n, k, target, memo);
-};
+*/
 
-var calculateRolls = function(n, k, target, memo) {
-	if (n === 0 || target < 0)
-		return target === 0 ? 1 : 0;
+var minCost = function(colors, neededTime) {
+    let last = 0;
+    let dp = [0]; // an empty array.
 
-	if (memo[n][target] !== -1)
-			return memo[n][target];
-
-	let ways = 0;
-
-    // iterate through each face of the die (i from 1 to k).
-	for (let i = 1; i <= k; i++)
-		ways = (ways + calculateRolls(n - 1, k, target - i, memo)) % MOD;
-
-	return memo[n][target] = ways;
+    for ( let curr = 1; curr < neededTime.length; curr++) {
+		
+        if (colors[curr] === colors[last]) {
+			
+			// if the needed time for the last balloon is less than the current balloon
+			// then update the dp array with the sum of its last value to the smallest.
+            if (neededTime[last] < neededTime[curr]) {
+                dp[curr] = dp[curr-1] + neededTime[last];
+                last = curr; // updte last with the current val
+            } else {
+                dp[curr] = dp[curr-1] + neededTime[curr];
+            }
+        } else {
+            dp[curr] = dp[curr-1];
+            last = curr;
+        }
+    }
+    return dp[dp.length-1];
 };
