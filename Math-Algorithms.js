@@ -57,3 +57,20 @@ function isPrime (n) {
 }
 
 // Big O = O(n)
+
+// Optimized approach is : 
+// integers lager than the square root do not need to be tested becasuse wheneever n=a*b,
+// one of th two factors a and b is less than or equal to the squre rooot of n ;
+
+function isPrime (n) {
+    
+    // Iterative solution
+    if(n < 2) return false;
+    
+    for (let i=2; i<Math.sqrt(n); i++) {
+        if((n%i === 0)) return false;
+    }
+    return true;;
+}
+
+// Big O = O(sqrt(n))
