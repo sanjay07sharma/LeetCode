@@ -90,3 +90,14 @@ function isPowerof2 (n) {
 }
 
 // Big O = O(log n) reason is that we are doubling the value of k in each iteration hence dividing the n by 2 in each iteration
+
+
+// But Power of two can be solved in constant time using bitwise operator
+
+function isPowerOfTwo(n) {
+    if (n < 1) return false;
+    
+    return (n & (n-1)) === 0;
+}
+
+// Big O = O(1) - constant time
