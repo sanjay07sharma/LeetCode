@@ -74,3 +74,19 @@ function isPrime (n) {
 }
 
 // Big O = O(sqrt(n))
+
+
+// 4. Power of 2 - 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
+
+function isPowerof2 (n) {
+   if (n < 1) return false;
+    
+   let k = 1;
+   while ( k < n ) {
+        k *= 2;
+   }
+    return k === n;
+
+}
+
+// Big O = O(log n) reason is that we are doubling the value of k in each iteration hence dividing the n by 2 in each iteration
