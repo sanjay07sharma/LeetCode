@@ -1,0 +1,10 @@
+
+        let [startTd, endTd] = [closestElement(selection.anchorNode, 'td'), closestElement(selection.focusNode, 'td')];
+        if (startTable !== endTable) {
+            if (endTable.contains(startTable)) {
+                startTd = endTd;
+                startTable = endTable;
+            } else {
+                endTd = startTd;
+                endTable = startTable;
+            }
