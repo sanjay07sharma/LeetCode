@@ -41,3 +41,19 @@ function factorial (n) {
     
     // Recursive solution : 
 }
+
+
+// 3. Prime number - a prime number is a number greaer than 1 and is divisible by 1 and itself only
+
+function isPrime (n) {
+    
+    // Iterative solution
+    if(n < 2) return false;
+    
+    for (let i=2; i<n; i++) {
+        if((n%i === 0)) return false;
+    }
+    return true;;
+}
+
+// Big O = O(n)
