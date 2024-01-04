@@ -34,6 +34,26 @@ function fibonacci (n) {
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
+/*
+The above naive recursive solution has an exponential time complexity (O(2^n)),
+which makes it highly inefficient for large values of n. This is because it
+recomputes the Fibonacci numbers multiple times, leading to redundant calculations.
+
+To improve efficiency, you might want to use techniques like memoization or
+dynamic programming to store and reuse previously computed Fibonacci numbers.
+*/
+
+// Recursive solution with memoization
+
+function fibonacci (n, memo) {
+    memo = memo || {};
+    if (memo[n]) return memo[n];
+    if (n < 2) {
+        return n;
+    }
+    return memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+}
+
 
 // 2. Factorial - product of all numbers from 1 to n
 
