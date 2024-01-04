@@ -5,9 +5,7 @@ function fibonacci (n) {
     if (n < 2) {
         return n;
     }
-    // Recursive function solution
-    
-    
+
     // Iterative solution
     let first = 0;
     let second = 1;
@@ -25,6 +23,15 @@ function fibonacci (n) {
     for(let i=2; i<=n; i++) {
         arr.push(arr[i-1] + arr[i-2]);
     }
+}
+
+// Recursive function solution
+
+function fibonacci (n) {
+    if (n < 2) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 
