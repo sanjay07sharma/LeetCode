@@ -60,15 +60,30 @@ function fibonacci (n, memo) {
 function factorial (n) {
     let result = 1;
     
+    // Check if n is a non-negative integer
+    if (n < 0 || !Number.isInteger(n)) {
+        return "Invalid input. Factorial is defined only for non-negative integers.";
+    }
+    
     // Iterative solution
     for (let i=2; i<=n; i++) {
         result *= i;
     }
     return result;
-    
-    // Recursive solution : 
 }
 
+// Recursive solution
+function factorial (n) {
+    // Check if n is a non-negative integer
+    if (n < 0 || !Number.isInteger(n)) {
+        return "Invalid input. Factorial is defined only for non-negative integers.";
+    }
+
+    if  (n === 0) return 1;
+
+    
+    return n * factorial(n - 1);
+}
 
 // 3. Prime number - a prime number is a number greaer than 1 and is divisible by 1 and itself only
 
