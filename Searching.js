@@ -50,6 +50,8 @@ if (result !== -1) {
   console.log(`Target ${targetValue} not found in the array`);
 }
 
+
+// Big O Analysis = O(log n)
 /*
 This implementation demonstrates a basic binary search.
 The key idea is to narrow down the search range by comparing the middle element
@@ -57,3 +59,22 @@ with the target and adjusting the pointers accordingly. The time complexity of b
 making it very efficient for sorted arrays.
 */
 
+
+// Linear Search
+
+/* Linear search is a very simple search algorithm. In this type of search,
+a sequential search is made over all items one by one.
+Every item is checked and if a match is found then that particular item is returned,
+otherwise the search continues till the end of the data collection.
+*/
+
+function linearSearch(arr, target) {
+  for (let i=0; i<arr.length; i++) {
+    if (arr[i] === target) {
+      return i; // Target found at index i
+    }
+  }
+  return -1; // Target not found
+} 
+
+//Big O analysis = O(n)
