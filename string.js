@@ -103,3 +103,94 @@ var lengthOfLongestSubstring = function(s) {
 
     return maxLength;
 };
+
+/*
+
+*/
+
+// Solution 1
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function(s) {
+    const n = s.length;
+
+    if (n <= 1) {
+        return s;
+    }
+
+    let start = 0;
+    let maxLength = 1;
+
+    // Create a 2D array to store the results of subproblems
+    const dp = Array.from({ length: n }, () => Array(n).fill(false));
+
+    // All substrings of length 1 are palindromes
+    for (let i = 0; i < n; i++) {
+        dp[i][i] = true;
+    }
+
+    // Check substrings of length 2 or more
+    for (let len = 2; len <= n; len++) {
+        for (let i = 0; i <= n - len; i++) {
+            const j = i + len - 1;
+
+            if (len === 2 && s[i] === s[j]) {
+                dp[i][j] = true;
+                start = i;
+                maxLength = len;
+            } else if (len > 2 && dp[i + 1][j - 1] && s[i] === s[j]) {
+                dp[i][j] = true;
+                start = i;
+                maxLength = len;
+            }
+        }
+    }
+
+    return s.substring(start, start + maxLength);
+};
+
+
+
+// Optimized Solution
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
+var longestPalindrome = function(s) {
+    let modifiedString = "^#" + s.split("").join("#") + "#$";
+    let length = modifiedString.length;
+    let palindromeLengths = new Array(length).fill(0);
+
+    let center = 0, rightBoundary = 0;
+
+    for (let i = 1; i < length - 1; i++) {
+        palindromeLengths[i] = (rightBoundary > i) ?
+            Math.min(rightBoundary - i, palindromeLengths[2 * center - i]) :
+            0;
+
+        while (modifiedString[i + 1 + palindromeLengths[i]] === modifiedString[i - 1 - palindromeLengths[i]]) {
+            palindromeLengths[i]++;
+        }
+
+        if (i + palindromeLengths[i] > rightBoundary) {
+            center = i;
+            rightBoundary = i + palindromeLengths[i];
+        }
+    }
+
+    // Find the maximum palindrome length and its center index
+    let maxLength = Math.max(...palindromeLengths);
+    let centerIndex = palindromeLengths.indexOf(maxLength);
+
+    // Calculate start and end indices of the longest palindrome in the original string
+    let start = Math.floor((centerIndex - maxLength) / 2);
+    let end = start + maxLength;
+
+    // Return the longest palindrome substring
+    return s.substring(start, end);
+};
