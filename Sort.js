@@ -22,3 +22,25 @@ function bubbleSort(arr) {
 }
 
 console.log(bubbleSort([5, 3, 8, 20, -1, 4])); // [ -1, 3, 4, 5, 8, 20 ]
+
+
+// Insertion Sort
+
+function insertionSort(arr) {
+    for (let i = 1; i < arr.length; i ++) {
+        let numberToInsert = arr[i];
+        let j = i - 1;
+        // compare and shift elements
+
+        while (j >= 0 && arr[j] > numberToInsert) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        // insert the number
+        arr[j + 1] = numberToInsert;
+    }
+    return arr;
+}
+
+
+console.log(insertionSort[-6,2,-3,4,55,20,66]); // [-6,-3,2,4,20,55,66]
