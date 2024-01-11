@@ -44,3 +44,36 @@ function insertionSort(arr) {
 
 
 console.log(insertionSort[-6,2,-3,4,55,20,66]); // [-6,-3,2,4,20,55,66]
+
+
+/**
+ * Quick Sort
+ * 1. Pick a pivot element
+ * 2. Partition the array into two sub-arrays: elements less than the pivot to left and elements 
+ * greater than the pivot to right
+ * 3. Call quicksort recursively on the left sub-array
+ * 4. Call quicksort recursively on the right sub-array
+ * 5. Return the resulting array
+ */
+
+
+function quicksort(arr) {
+    if (arr.length < 2) {
+        return arr;
+    }
+    let pivot = arr[length-1];
+    let left = [];
+    let right = [];
+    for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            rigth.push(arr[i]);
+        }
+    }
+
+    return [...quicksort(left), pivot, ...quicksort(right)];
+}
+
+
+console.log(quicksort([5, 3, 8, 20, -1, 4])); // [ -1, 3, 4, 5, 8, 20 ]
