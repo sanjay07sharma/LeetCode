@@ -229,11 +229,34 @@ s consists of uppercase and lowercase letters.
  * @return {boolean}
  */
 function getVovelFromString(s) {
-    return s.split('').filter(char => 'aeiouAEIOU'.includes(char)).join('');
+    return s.split('').filter(char => 'aeiouAEIOU'.includes(char)).length;
 }
 var halvesAreAlike = function(s) {
     let firstHalf = getVovelFromString(s.slice(0, Math.ceil(s.length / 2)));
     let secondHalf = getVovelFromString(s.slice(Math.ceil(s.length / 2)));
 
-    return (firstHalf.length === secondHalf.length) ? true : false;
+    return (firstHalf === secondHalf) ? true : false;
+};
+
+
+// Mathematical Solution
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+
+var halvesAreAlike = function(s) {
+    let res = 0;
+    for (let i = 0; i<s.length; i++) {
+        if (['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'].includes(s[i])) {
+            if (i >= (s.length/2)) {
+                res -= 1;
+            } else {
+                res += 1;
+            }
+        }
+    }
+
+    return res === 0;
 };
