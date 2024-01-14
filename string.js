@@ -260,3 +260,98 @@ var halvesAreAlike = function(s) {
 
     return res === 0;
 };
+
+
+/*
+Two strings are considered close if you can attain one from the other using the following operations:
+
+Operation 1: Swap any two existing characters.
+For example, abcde -> aecdb
+Operation 2: Transform every occurrence of one existing character into another existing character,
+and do the same with the other character.
+For example, aacabb -> bbcbaa (all a's turn into b's, and all b's turn into a's)
+You can use the operations on either string as many times as necessary.
+
+Given two strings, word1 and word2, return true if word1 and word2 are close, and false otherwise.
+
+
+
+Example 1:
+
+Input: word1 = "abc", word2 = "bca"
+Output: true
+Explanation: You can attain word2 from word1 in 2 operations.
+Apply Operation 1: "abc" -> "acb"
+Apply Operation 1: "acb" -> "bca"
+Example 2:
+
+Input: word1 = "a", word2 = "aa"
+Output: false
+Explanation: It is impossible to attain word2 from word1, or vice versa, in any number of operations.
+Example 3:
+
+Input: word1 = "cabbba", word2 = "abbccc"
+Output: true
+Explanation: You can attain word2 from word1 in 3 operations.
+Apply Operation 1: "cabbba" -> "caabbb"
+Apply Operation 2: "caabbb" -> "baaccc"
+Apply Operation 2: "baaccc" -> "abbccc"
+
+
+Constraints:
+
+1 <= word1.length, word2.length <= 105
+word1 and word2 contain only lowercase English letters.
+*/
+
+// JS 
+// Logic was simply to check if the two strings have the same unique characters
+// and the same frequency of each character.
+
+function closeStrings(word1, word2) {
+    if (word1.length !== word2.length) {
+        return false;
+    }
+
+    const counts1 = new Map();
+    const counts2 = new Map();
+
+    for (const char of word1) {
+        counts1.set(char, (counts1.get(char) || 0) + 1);
+    }
+
+    for (const char of word2) {
+        counts2.set(char, (counts2.get(char) || 0) + 1);
+    }
+
+    const keys1 = Array.from(counts1.keys()).sort();
+    const keys2 = Array.from(counts2.keys()).sort();
+
+    if (keys1.join('') !== keys2.join('')) {
+        return false;
+    }
+
+    const freq1 = Array.from(counts1.values()).sort();
+    const freq2 = Array.from(counts2.values()).sort();
+
+    return JSON.stringify(freq1) === JSON.stringify(freq2);
+}
+
+// Tried Python code:
+// Logic was simply to check if the two strings have the same unique characters
+// and the same frequency of each character.
+
+// class Solution(object):
+//     def closeStrings(self, word1, word2):
+//         if len(word1) != len(word2):
+//             return False
+//         a,b = sorted(set(word1)),sorted(set(word2))
+//         if a != b:
+//             return False
+//         count1,count2 = [],[]
+//         for s1 in a:
+//             count1.append(word1.count(s1))
+//         for s2 in b:
+//             count2.append(word2.count(s2))
+//         if sorted(count1) == sorted(count2):
+//             return True
