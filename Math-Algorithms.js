@@ -143,3 +143,35 @@ function isPowerOfTwo(n) {
 }
 
 // Big O = O(1) - constant time
+
+
+// Palindrome 
+
+function isPalindrome(str) {
+    // Remove non-alphanumeric characters and convert to lowercase
+    const cleanedStr = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    // Compare the cleaned string with its reverse
+    return cleanedStr === cleanedStr.split('').reverse().join('');
+}
+
+// Test the function
+const input = prompt("Enter a string:");
+if (isPalindrome(input)) {
+    console.log(`"${input}" is a palindrome!`);
+} else {
+    console.log(`"${input}" is not a palindrome.`);
+}
+
+
+Explanation:
+
+1. The replace method removes all non-alphanumeric characters using a regular expression.
+
+
+2. The toLowerCase method ensures case insensitivity.
+
+
+3. The string is reversed using split, reverse, and join.
+
+
+4. The original cleaned string is compared to its reversed version.
